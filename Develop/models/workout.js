@@ -1,3 +1,5 @@
+const exercise = require ('./exercise')
+
 const mongoose = require("mongoose")
 
 const workout = new mongoose.Schema({
@@ -13,4 +15,14 @@ const workout = new mongoose.Schema({
     }]
 })
 
-module.exports = mongoose.model('workout', workout)
+let model = mongoose.model("workouts", workout)
+
+model.aggregate([
+    {
+        $addFields: {
+            totalDuration: {$sum: "$exercises.$duration"}
+        }
+    }
+])
+
+module.exports = model
