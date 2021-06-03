@@ -1,28 +1,20 @@
-const exercise = require ('./exercise')
+const exercise = require("./exercise");
 
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const workout = new mongoose.Schema({
-    day: Date,
-    exercises: [{
-        type: String,
-        name: String,
-        duration: Number,
-        weight: Number,
-        reps: Number,
-        sets: Number,
-        distance: Number,
-    }]
-})
+  day: Date,
+  exercises: [exercise],
+});
 
-let model = mongoose.model("workouts", workout)
+let model = mongoose.model("workouts", workout);
 
 model.aggregate([
-    {
-        $addFields: {
-            totalDuration: {$sum: "$exercises.$duration"}
-        }
-    }
-])
+  {
+    $addFields: {
+      totalDuration: { $sum: "$exercises.$duration" },
+    },
+  },
+]);
 
-module.exports = model
+module.exports = model;

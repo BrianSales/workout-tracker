@@ -25,7 +25,42 @@ app.get("/api/workouts", async (req, res) => {
   res.json(results);
 });
 
-// app.get("/", (req,res)=>{
+app.get("/api/workouts/range", async (req, res) => {
+  let results = await db.Workout.aggregate([
+    {
+      $addFields: {
+        totalDuration: { $sum: "$exercises.duration" },
+      },
+    },
+  ]);
+  console.log("results", results);
+
+  // console.log(results[0].exercises[0])
+  if (results.length > 7) {
+    res.json(results.slice(results.length - 7, results.length));
+  } else {
+    res.json(results);
+  }
+});
+
+app.post("/api/workouts", async (req, res) => {
+  let workout = {
+    day: new Date(),
+    exercises: [],
+  };
+  let createdWorkout = await db.Workout.create(workout);
+  res.json(createdWorkout);
+});
+
+app.put("/api/workouts/:id", async (req, res) => {
+  let updatedWorkout = await db.Workout.update(
+    { _id: req.params.id },
+    {
+      $push: { exercises: req.body },
+    }
+  );
+  res.json(updatedWorkout);
+});
 
 // })
 mongoose.connect("mongodb://localhost/workout", {
