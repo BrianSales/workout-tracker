@@ -63,7 +63,7 @@ app.put("/api/workouts/:id", async (req, res) => {
 });
 
 // })
-mongoose.connect("mongodb://localhost/workout", {
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
