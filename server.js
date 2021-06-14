@@ -62,11 +62,18 @@ app.put("/api/workouts/:id", async (req, res) => {
   res.json(updatedWorkout);
 });
 
-// })
+const PORT = process.env.PORT || 3000;
+
+
+
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
 });
-app.listen(3000);
+// app.listen(3000);
+
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
